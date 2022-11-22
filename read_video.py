@@ -3,7 +3,7 @@ from plantcv import plantcv as pcv
 import numpy as np
 from clusters import get_distance
 import matplotlib.pyplot as plt
-
+import json
 
 def get_first_frame(path):
     cap = cv2.VideoCapture(path)
@@ -37,14 +37,25 @@ def read_video(cap, areas):
                 canny = pcv.canny_edge_detect(img=img_crop, sigma=area.sigma, low_thresh=area.lower_trash, high_thresh=area.upper_trash)
                 nearest_point_in_first_cluster, nearest_point_in_second_cluster, distance = get_distance(area.choosen_point,
                                                                                                          canny)
-
                 area.distances.append(distance)
 
         else:
             break
 
-    for area in areas:
+    # jsons = []
+
+    for i, area in enumerate(areas):
+        # jsonStr = json.dumps(area.__dict__)
+        # jsons.append(jsonStr)
+
+        plt.title(f"Roi {i}")
+        plt.xlabel("video frame")
+        plt.ylabel("pixels")
         plt.plot(area.distances)
         plt.show()
+
+    # with open("jsons", "w") as f:
+    #     for jjson in jsons:
+    #         f.write(f"{jjson}\n")
 
     print(areas)

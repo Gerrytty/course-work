@@ -59,13 +59,15 @@ def select_points(img_raw):
 
         canny = pcv.canny_edge_detect(img=img_crop, sigma=0.1, low_thresh=0, high_thresh=0)
 
+        show_canny = canny.copy()
+
         cv2.imshow(f"roi_{count_of_roi}", canny)
 
         wait_time = 10
         while cv2.getWindowProperty(f"roi_{count_of_roi}", cv2.WND_PROP_VISIBLE) >= 1:
 
             if len(points) > count_of_roi:
-                cv2.circle(canny, (points[-1][1], points[-1][0]), 2, (255, 0, 0), -1)
+                cv2.circle(show_canny, (points[-1][1], points[-1][0]), 2, (255, 0, 0), -1)
 
                 if area.nearest_point_in_first_cluster is not None and area.nearest_point_in_second_cluster is not None:
 
@@ -75,12 +77,12 @@ def select_points(img_raw):
                     nearest_point_in_second_cluster_x = int(area.nearest_point_in_second_cluster[0])
                     nearest_point_in_second_cluster_y = int(area.nearest_point_in_second_cluster[1])
 
-                    cv2.circle(canny, (nearest_point_in_first_cluster_y, nearest_point_in_first_cluster_x), 2,
+                    cv2.circle(show_canny, (nearest_point_in_first_cluster_y, nearest_point_in_first_cluster_x), 2,
                                (255, 0, 0), -1)
-                    cv2.circle(canny, (nearest_point_in_second_cluster_y, nearest_point_in_second_cluster_x), 2,
+                    cv2.circle(show_canny, (nearest_point_in_second_cluster_y, nearest_point_in_second_cluster_x), 2,
                                (255, 0, 0), -1)
 
-                    cv2.line(canny, (nearest_point_in_second_cluster_y, nearest_point_in_second_cluster_x),
+                    cv2.line(show_canny, (nearest_point_in_second_cluster_y, nearest_point_in_second_cluster_x),
                              (nearest_point_in_first_cluster_y, nearest_point_in_first_cluster_x),
                              (255, 0, 0), 1)
 
@@ -94,7 +96,9 @@ def select_points(img_raw):
 
                     print(distance)
 
-            cv2.imshow(f"roi_{count_of_roi}", canny)
+            show_canny = cv2.addWeighted(img_crop, 0.7, show_canny, 0.3, 0)
+
+            cv2.imshow(f"roi_{count_of_roi}", show_canny)
             keyCode = cv2.waitKey(wait_time)
             if (keyCode & 0xFF) == ord("q"):
                 cv2.destroyAllWindows()
@@ -109,6 +113,7 @@ def select_points(img_raw):
             area.sigma = sigma
 
             canny = pcv.canny_edge_detect(img=img_crop, sigma=sigma, low_thresh=lower, high_thresh=upper)
+            show_canny = canny.copy()
 
         if area.choosen_point is not None:
             rois_array.append(area)

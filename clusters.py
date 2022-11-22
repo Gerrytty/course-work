@@ -23,9 +23,18 @@ def get_clusters(points_array):
 
     d = {k: v for k, v in sorted(d.items(), key=lambda item: item[1], reverse=True)}
 
+    clusters = {}
+
+    for i, label in enumerate(clustering.labels_):
+
+        if label not in clusters:
+            clusters[label] = [points_array[i]]
+        else:
+            clusters[label].append(points_array[i])
+
     c = Clusters(d, clustering.labels_)
 
-    return c
+    return clusters
 
 
 def get_cluster_points(points_array, clusters, position):
@@ -48,15 +57,19 @@ def get_cluster_points(points_array, clusters, position):
 
 def get_nearest(clusters, point):
 
-    distances = []
+    clusters_array = []
 
-    for cluster in clusters:
+    for key in clusters.keys():
+        cluster = clusters[key]
+        distances = []
         for cluster_point in cluster:
             distances.append(dist(point, cluster_point))
 
-    distances.sort()
+        clusters_array.append((cluster, np.min(distances)))
 
-    return distances[0], distances[1]
+    clusters_array.sort(key=lambda x: x[1])
+
+    return clusters_array[0][0], clusters_array[1][0]
 
 
 def dist(p1, p2):
@@ -68,8 +81,14 @@ def get_distance(selected_point, canny):
 
     clusters = get_clusters(points_array)
 
-    cluster1 = get_cluster_points(points_array, clusters, 0)
-    cluster2 = get_cluster_points(points_array, clusters, 1)
+    cluster1, cluster2 = get_nearest(clusters, selected_point)
+
+    # print(cluster1)
+    # print("--------------------------")
+    # print(cluster2)
+
+    # cluster1 = get_cluster_points(points_array, clusters, 0)
+    # cluster2 = get_cluster_points(points_array, clusters, 1)
 
     nearest_point_in_first_cluster = min(cluster1, key=lambda p: dist(p, selected_point))
     nearest_point_in_second_cluster = min(cluster2, key=lambda p: dist(p, selected_point))
