@@ -2,9 +2,11 @@ import tkinter as tk
 # import the necessary packages
 from tkinter import *
 from tkinter import filedialog as tkFileDialog
-from multiple_roi import select_rois
+from multiple_roi import select_points, read_img
+from read_video import read_video
 
 # https://www.pythontutorial.net/tkinter/tkinter-validation/
+
 
 class ImgInfo:
     def __init__(self, w, h):
@@ -21,7 +23,8 @@ def select_path():
 
     if len(path) > 0:
         print(path)
-        select_rois(path)
+        # path = "/home/julia/occlusion-tracker/simple_test/out.png"
+        read_img(path)
 
 
 window = tk.Tk()

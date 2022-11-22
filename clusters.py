@@ -34,6 +34,9 @@ def get_cluster_points(points_array, clusters, position):
 
     keys = list(clusters.d.keys())
 
+    if position >= len(keys):
+        return []
+
     for i, point in enumerate(points_array):
         point_cluster = clusters.labels[i]
 
@@ -41,6 +44,19 @@ def get_cluster_points(points_array, clusters, position):
             cluster_points.append(point)
 
     return cluster_points
+
+
+def get_nearest(clusters, point):
+
+    distances = []
+
+    for cluster in clusters:
+        for cluster_point in cluster:
+            distances.append(dist(point, cluster_point))
+
+    distances.sort()
+
+    return distances[0], distances[1]
 
 
 def dist(p1, p2):

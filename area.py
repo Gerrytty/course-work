@@ -17,3 +17,5 @@ class Area:
 
         self.nearest_point_in_first_cluster = None
         self.nearest_point_in_second_cluster = None
+
+        self.distances = []
