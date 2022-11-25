@@ -4,6 +4,17 @@ import numpy as np
 from clusters import get_distance
 import matplotlib.pyplot as plt
 import json
+import pandas as pd
+from screeninfo import get_monitors
+
+# todo filter outliers
+# todo multiple points in one roi
+# todo multiple graphics in one canvas
+# todo real time (optimal) (choose camera)
+# todo x axis as seconds
+# todo add choice for map pixels to mm/cm (variable choice)
+# todo exec file
+
 
 def get_first_frame(path):
     cap = cv2.VideoCapture(path)
@@ -15,7 +26,9 @@ def get_first_frame(path):
         ret, frame = cap.read()
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
-        if ret != -1:
+        frame = cv2.resize(frame, (get_monitors()[0].width // 2, get_monitors()[0].height // 2))
+
+        if ret:
             return frame, cap
 
 
@@ -42,20 +55,4 @@ def read_video(cap, areas):
         else:
             break
 
-    # jsons = []
-
-    for i, area in enumerate(areas):
-        # jsonStr = json.dumps(area.__dict__)
-        # jsons.append(jsonStr)
-
-        plt.title(f"Roi {i}")
-        plt.xlabel("video frame")
-        plt.ylabel("pixels")
-        plt.plot(area.distances)
-        plt.show()
-
-    # with open("jsons", "w") as f:
-    #     for jjson in jsons:
-    #         f.write(f"{jjson}\n")
-
-    print(areas)
+    return areas

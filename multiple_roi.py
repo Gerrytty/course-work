@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import pandas as pd
+
 from area import Area
 from plantcv import plantcv as pcv
 from clusters import *
@@ -20,9 +22,9 @@ def read_img(img_path):
 
     areas = select_points(img_raw)
 
-    read_video(cap, areas)
+    areas = read_video(cap, areas)
 
-    return img_raw
+    return areas, img_raw
 
 
 def select_points(img_raw):
