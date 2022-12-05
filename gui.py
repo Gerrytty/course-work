@@ -81,40 +81,41 @@ def select_path():
         df.to_csv(f"{csv_name}.csv")
 
 
-window = tk.Tk()
+if __name__ == "__main__":
+    window = tk.Tk()
 
-style = Style(window)
-print(style.theme_names())
-print(style.theme_use())
-style.theme_use(style.theme_names()[0])
+    style = Style(window)
+    print(style.theme_names())
+    print(style.theme_use())
+    style.theme_use(style.theme_names()[0])
 
-window.title('Main window')
-window.geometry('700x200')
+    window.title('Main window')
+    window.geometry('700x200')
 
-# Create label
-width_label = Label(window, text="Введите ширину видео (см)")
-width_label.config(font=("Courier", 14))
-# TextBox Creation
-inputtxt_width = tk.Text(window, height=1, width=20)
-# Create label
-height_label = Label(window, text="Enter height")
-height_label.config(font=("Courier", 14))
-inputtxt_height = tk.Text(window, height=1, width=20)
+    # Create label
+    width_label = Label(window, text="Введите ширину видео (см)")
+    width_label.config(font=("Courier", 14))
+    # TextBox Creation
+    inputtxt_width = tk.Text(window, height=1, width=20)
+    # Create label
+    height_label = Label(window, text="Enter height")
+    height_label.config(font=("Courier", 14))
+    inputtxt_height = tk.Text(window, height=1, width=20)
 
-spacer1 = tk.Label(window, text="")
-# spacer1.grid(row=4, column=0)
+    spacer1 = tk.Label(window, text="")
+    # spacer1.grid(row=4, column=0)
 
-# width_label.pack()
-# inputtxt_width.pack()
-# height_label.pack()
-# inputtxt_height.pack()
+    # width_label.pack()
+    # inputtxt_width.pack()
+    # height_label.pack()
+    # inputtxt_height.pack()
 
-button = tk.Button(window, text="Выбрать путь", command=select_path)
-# button.grid(row=0, column=1, padx=10, pady=10)
+    button = tk.Button(window, text="Выбрать путь", command=select_path)
+    # button.grid(row=0, column=1, padx=10, pady=10)
 
-width_label.pack()
-inputtxt_width.pack()
-spacer1.pack()
-button.pack()
+    width_label.pack()
+    inputtxt_width.pack()
+    spacer1.pack()
+    button.pack()
 
-window.mainloop()
+    window.mainloop()

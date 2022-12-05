@@ -18,11 +18,11 @@ def read_img(img_path):
     # img_raw = cv2.resize(img_raw, (1440, 900))
     # img_raw = cv2.equalizeHist(img_raw)
 
-    img_raw, cap = get_first_frame(img_path)
+    img_raw, cap, fps = get_first_frame(img_path)
 
     areas = select_points(img_raw)
 
-    areas = read_video(cap, areas)
+    areas = read_video(cap, areas, fps)
 
     return areas, img_raw
 
